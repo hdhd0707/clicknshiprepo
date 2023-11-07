@@ -1,0 +1,53 @@
+server:
+  port: 8780
+  tomcat:
+    basedir: var/log
+    accesslog:
+      enabled: true
+      file-date-format: .yyyyMMdd
+      prefix: access_log
+      pattern: common
+
+spring:
+  application:
+    name: auth-service
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver 
+    url: jdbc:mysql://localhost:3306/authdb
+    username: clicknship-service-account
+    password: ENC(VPMRfiU/TEhrsGmLO5SSbKyufVj0k4xGd/EmbnPITuIOsBY2TgSyt1gnZg4UToCV)
+  jpa:
+    show-sql: true
+#  rabbitmq:
+#    host: ${spring.rabbitmq.host}
+#    username: ${spring.rabbitmq.username}
+#    password: ${spring.rabbitmq.password}
+#    virtual-host: ${spring.rabbitmq.virtual-host}
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/ 
+      
+feign:
+  hystrix:
+    enabled: true
+      
+config:
+  secret-key: 123456
+      
+security:
+  jasypt:
+    algorithm: PBEWITHHMACSHA512ANDAES_256
+    salt: X3fhYsnV#R#tisFWXXe
+    iv-generator-classname: org.jasypt.iv.RandomIvGenerator
+    salt-generator-classname: org.jasypt.salt.RandomSaltGenerator
+    string-output-type: base64
+  secret-key: ENC(FLfiC/wiJ/eFh8DwLbcYjNeBVTM3e3/7L/XIh8LAegdSTMC45O1mYiWrGBfEdwX2gadprxe2aHDrueMTUlQwpw==)

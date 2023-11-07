@@ -1,0 +1,111 @@
+version: "3.7"
+services:
+
+  clicknship-db:
+    image: clicknship-db-3307-0.0.1
+    build: ./dbscript
+    restart: always
+    ports:
+     - 3307:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: clicknship
+
+  clicknship-registry:
+    image: clicknship-registry-8761-0.0.1
+    build: ./clicknship-registry
+    ports:
+      - "8761:8761"
+    expose:
+      - 8761
+      
+  clicknship-gateway:
+    image: clicknship-gateway-8770-0.0.1
+    build: ./clicknship-gateway
+    depends_on:
+      - clicknship-db
+      - clicknship-registry
+    ports:
+      - "8770:8770"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://clicknship-registry:8761/eureka 
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: 'http://clicknship-auth-service:8780/rsa/publicKey'
+      
+  clicknship-auth-service:
+    image: clicknship-auth-service-8780-0.0.1
+    build: ./clicknship-auth-service
+    depends_on:
+      - clicknship-db
+      - clicknship-registry
+    ports:
+      - "8780:8780"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://clicknship-registry:8761/eureka
+      SPRING_DATASOURCE_URL: jdbc:mysql://clicknship-db:3306/authdb
+      
+  clicknship-cart-service:
+    image: clicknship-cart-service-8762-0.0.1
+    build: ./clicknship-cart-service
+    depends_on:
+      - clicknship-db
+      - clicknship-registry
+    ports:
+      - "8762:8762"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://clicknship-registry:8761/eureka
+      SPRING_DATASOURCE_URL: jdbc:mysql://clicknship-db:3306/shoppingcartdb 
+      
+  clicknship-catalogue-service:
+    image: clicknship-catalogue-service-8763-0.0.1
+    build: ./clicknship-catalogue-service
+    depends_on:
+      - clicknship-db
+      - clicknship-registry
+    ports:
+      - "8763:8763"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://clicknship-registry:8761/eureka
+      SPRING_DATASOURCE_URL: jdbc:mysql://clicknship-db:3306/productdb 
+      
+  clicknship-order-service:
+    image: clicknship-order-service-8764-0.0.1
+    build: ./clicknship-order-service
+    depends_on:
+      - clicknship-db
+      - clicknship-registry
+    ports:
+      - "8764:8764"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://clicknship-registry:8761/eureka
+      SPRING_DATASOURCE_URL: jdbc:mysql://clicknship-db:3306/orderdb  
+      
+  clicknship-payment-service:
+    image: clicknship-payment-service-8765-0.0.1
+    build: ./clicknship-payment-service
+    depends_on:
+      - clicknship-db
+      - clicknship-registry
+    ports:
+      - "8765:8765"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://clicknship-registry:8761/eureka  
+      
+  clicknship-user-service:
+    image: clicknship-user-service-8766-0.0.1
+    build: ./clicknship-user-service
+    depends_on:
+      - clicknship-db
+      - clicknship-registry
+    ports:
+      - "8766:8766"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://clicknship-registry:8761/eureka
+      SPRING_DATASOURCE_URL: jdbc:mysql://clicknship-db:3306/userdb  
+      
+  clicknship-app:
+    restart: always
+    image: clicknship-app
+    build: ./clicknship-app
+    depends_on:
+      - clicknship-gateway
+    ports:
+      - 4200:443

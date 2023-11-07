@@ -1,0 +1,135 @@
+input[type=checkbox] {
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(2); /* IE */
+  -moz-transform: scale(2); /* FF */
+  -webkit-transform: scale(2); /* Safari and Chrome */
+  -o-transform: scale(2); /* Opera */
+  transform: scale(2);
+  padding: 10px;
+}
+
+.checkboxtext {
+  /* Checkbox text */
+  font-size: 135%;
+  display: inline;
+  font-family: monospace;
+  font-weight: bold;
+  padding-left: 20px;
+}
+
+/* Solid border */
+hr.solid {
+  border-top: 3px solid #bbb;
+}
+
+._2sBbZC:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+._2sBbZC {
+  outline: none;
+  cursor: pointer;
+  border: 0;
+  font-size: .875rem;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: 0;
+  display: flex;
+  justify-content: center;
+  transition: background-color .1s cubic-bezier(.4,0,.6,1);
+  border: 1px solid rgba(0,0,0,.09);
+  border-radius: 2px;
+  background: transparent;
+  color: rgba(0,0,0,.8);
+  width: 32px;
+  height: 32px;
+}
+
+input.spinner:focus, input.spinner:active {
+  box-shadow: none;
+  outline: none;
+}
+
+input.spinner {
+  width: 50px;
+  border: 2px solid lightgrey;
+  border-right: 0;
+  border-left: 0;
+  text-align: center;
+  cursor: text;
+}
+
+button.spinner {
+  background-color: transparent; 
+  border: 2px solid lightgrey;
+}
+
+button.spinner > .reduce-thickness {
+  -webkit-text-stroke: 1px white;
+}
+
+.cart-product-information {
+  display:flex; 
+  align-items: center; 
+  padding-top: 20px;
+}
+
+.cart-product-information.label {
+  width: 110px; 
+}
+
+.cart-product-information-wrapper {
+  display: flex; 
+  flex-direction: column; 
+  padding-left: 20px; 
+  font-size: 20px; 
+  text-transform: capitalize;
+}
+
+.cart-product-wrapper {
+  border: 1px solid black
+}
+
+.cart-product-wrapper.not-first-child {
+  border-top: none;
+}
+
+.image-width {
+  width: 200px;
+}
+
+.cart-image-wrapper {
+  padding-left: 20px;
+}
+
+.cart-product-checkbox {
+  display: flex; 
+  align-self: center;
+}
+
+.total-price-wrapper {
+  display: flex; 
+  font-size: 24px;
+}
+
+.total-price-wrapper > .label {
+  padding-right: 50px;
+}
+
+.checkout-btn-wrapper {
+  display: flex;
+}
+
+.order-details-label {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.order-details-label.not-first-child {
+  padding-top: 10px;
+}
+
+.input-fields:active, .input-fields:focus {
+  outline: none;
+}

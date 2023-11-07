@@ -1,0 +1,23 @@
+server:
+  port: 8765
+  tomcat:
+    basedir: var/log/
+    accesslog:
+      enabled: true
+      file-date-format: .yyyyMMdd
+      prefix: access_log
+      pattern: common
+
+spring:
+  application:
+    name: payment-service
+#  rabbitmq:
+#    host: ${spring.rabbitmq.host}
+#    username: ${spring.rabbitmq.username}
+#    password: ${spring.rabbitmq.password}
+#    virtual-host: ${spring.rabbitmq.virtual-host}
+        
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/  

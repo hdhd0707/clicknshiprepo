@@ -1,0 +1,120 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+      
+server:
+  port: 8770
+  ssl:
+    enabled: true
+    key-alias: skipper
+    key-store: classpath:skipper.keystore
+    key-store-type: jks
+    key-store-password: skipper
+    key-password: skipper
+  tomcat:
+    basedir: var/log/
+    accesslog:
+      enabled: true
+      file-date-format: .yyyyMMdd
+      prefix: access_log
+      pattern: common
+
+spring:
+  application:
+    name: gateway-springcloudgateway
+  security:
+      oauth2:
+        resourceserver:
+          jwt:
+            jwk-set-uri: 'http://localhost:8780/rsa/publicKey'
+#  rabbitmq:
+#    host: ${spring.rabbitmq.host}
+#    username: ${spring.rabbitmq.username}
+#    password: ${spring.rabbitmq.password}
+#    virtual-host: ${spring.rabbitmq.virtual-host}
+  cloud:
+    gateway:
+      routes:
+      - id: auth-service
+        uri: lb://auth-service
+        predicates:
+        - Path=/api/authenticationService/**
+        filters:
+        - RewritePath=/api/authenticationService/(?<segment>.*), /$\{segment}
+      - id: cart-service
+        uri: lb://cart-service
+        predicates:
+        - Path=/api/cartService/**
+        filters:
+        - RewritePath=/api/cartService/(?<segment>.*), /$\{segment}
+      - id: catalogue-service
+        uri: lb://catalogue-service
+        predicates:
+        - Path=/api/catalogueService/**
+        filters:
+        - RewritePath=/api/catalogueService/(?<segment>.*), /$\{segment} 
+      - id: user-service
+        uri: lb://user-service
+        predicates:
+        - Path=/api/userService/**
+        filters:
+        - RewritePath=/api/userService/(?<segment>.*), /$\{segment} 
+      - id: order-service
+        uri: lb://order-service
+        predicates:
+        - Path=/api/orderService/**
+        filters:
+        - RewritePath=/api/orderService/(?<segment>.*), /$\{segment} 
+      - id: payment-service
+        uri: lb://payment-service
+        predicates:
+        - Path=/api/paymentService/**
+        filters:
+        - RewritePath=/api/paymentService/(?<segment>.*), /$\{segment} 
+        
+        
+secure:
+  ignore:
+    urls:
+      - "/actuator/**"
+      - "/api/authenticationService/oauth/token"
+      - "/api/authenticationService/securityUser/register"
+      - "/api/authenticationService/securityUser/login"
+      - "/api/authenticationService/securityUser/is2faRequired"
+      - "/api/catalogueService/catalogue/catalogue"
+      - "/api/catalogueService/catalogue/product/**"
+      - "/api/catalogueService/catalogue/catalogue/search"
+      - "/api/catalogueService/catalogue/product/reviews/**"
+      - "/api/catalogueService/catalogue/product/ratings/**"
+      - "/api/userService/user/detail/**"
+      - "/api/userService/user/logout"
+      
+  authroities:
+    - 
+      urls:
+        - "/api/userService/user/detail/**"
+        - "/api/cartService/shoppingCart/**"
+        - "/api/orderService/order/order/search"
+        - "/api/authenticationService/securityUser/update2fa"
+      roles:
+        - BUYER
+        - SELLER
+        
+    - 
+      urls:
+        - "/api/catalogueService/catalogue/image"
+        - "/api/catalogueService/catalogue/**"
+        - "/api/orderService/order/confirmDelivery"
+      roles:
+        - SELLER
+        
+    - 
+      urls:
+        - "/api/orderService/order/**"
+        - "/api/orderService/order/orderReceived"
+        - "/api/catalogueService/catalogue/addProductReview"
+        - "api/paymentService/**"
+      roles:
+        - BUYER
+        

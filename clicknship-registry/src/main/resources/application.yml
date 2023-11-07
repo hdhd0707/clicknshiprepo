@@ -1,0 +1,22 @@
+server:
+  port: 8761
+  tomcat:
+    basedir: var/log/
+    accesslog:
+      enabled: true
+      file-date-format: .yyyyMMdd
+      prefix: access_log
+      pattern: common
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+spring:
+  application:
+    name: eurka-server

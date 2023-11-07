@@ -1,0 +1,7 @@
+<p-card *ngIf="user" header="User profile" [style]="{'width': '50rem', 'margin-bottom': '2em'}">
+    <h6>Name: {{user.name}}</h6>
+    <h6>Contact Number: {{user.contactDetail}}</h6>
+    <h6>Card Number: {{user.cardNumber}}</h6>
+    <h6>Delivery Address: {{user.address}}</h6>
+    <mat-slide-toggle [checked]="loginUserDetails && loginUserDetails.authEnabled" (change)="toggle2fa($event)">2FA {{ loginUserDetails?.authEnabled ? 'Enabled': 'Disabled' }}</mat-slide-toggle>
+</p-card>
